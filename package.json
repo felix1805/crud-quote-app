@@ -1,0 +1,26 @@
+{
+  "name": "crud-quote-app",
+  "version": "1.0.0",
+  "description": "This app utilizes a mongoDB database and functions as a CRUD enabled server.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felix1805/crud-quote-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/felix1805/crud-quote-app/issues"
+  },
+  "homepage": "https://github.com/felix1805/crud-quote-app#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
