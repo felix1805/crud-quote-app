@@ -1,17 +1,34 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
+const MongoClient = require('mongodb').MongoClient
+const connectionString = ''
 
-app.use(bodyParser.urlencoded({ extended: true }))
+MongoClient.connect(connectionString, { useUnifiedTopology: true })
+  .then(client => {
+    console.log('Connected to Database')
 
-app.listen(3000, function () {
-  console.log('listening on server 3000')
-})
+    const db = client.db('star-wars-quotes')
+    const quotesCollection = db.collection('quotes')
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html')
-})
+    app.use(bodyParser.urlencoded({ extended: true }))
 
-app.post('/quotes', (req, res) => {
-  console.log('test')
-})
+    app.get('/', (req, res) => {
+      res.sendFile(__dirname + '/index.html')
+    })
+    app.post('/quotes', (req, res) => {
+      quotesCollection.insertOne(req.body)
+        .then(result => {
+          console.log(result)
+          res.redirect('/')
+        })
+        .catch(error => console.error(error))
+    })
+    app.listen(3000, function () {
+      console.log('listening on server 3000')
+    })
+  })
+  .catch(error => console.error(error))
+
+
+
