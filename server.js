@@ -13,14 +13,16 @@ MongoClient.connect(connectionString)
 
     app.set('view engine', 'ejs')
     app.use(bodyParser.urlencoded({ extended: true }))
+    app.use(express.static('public'))
+    app.use(bodyParser.json())
 
     app.get('/', (req, res) => {
       quotesCollection.find().toArray()
         .then(results => {
           console.log(results)
+          res.render('index.ejs', { quotes: results })
         })
         .catch(error => console.error(error))
-      res.sendFile(__dirname + '/index.html')
     })
     app.post('/quotes', (req, res) => {
       quotesCollection.insertOne(req.body)
@@ -29,6 +31,22 @@ MongoClient.connect(connectionString)
           res.redirect('/')
         })
         .catch(error => console.error(error))
+    })
+    app.put('/quotes', (req, res) => {
+      quotesCollection.findOneAndUpdate(
+        { name: 'Yoda' },
+        {
+          $set: {
+            name: req.body.name,
+            quote: req.body.quote,
+          },
+        },
+        { upsert: true }
+      )
+      .then(result => {
+        console.log(result)
+      })
+      .catch(error=> console.error(error))
     })
     app.listen(3000, function () {
       console.log('listening on server 3000')
