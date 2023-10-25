@@ -27,7 +27,7 @@ MongoClient.connect(connectionString)
     app.post('/quotes', (req, res) => {
       quotesCollection.insertOne(req.body)
         .then(result => {
-          console.log(result)
+          // console.log(result)
           res.redirect('/')
         })
         .catch(error => console.error(error))
@@ -45,6 +45,7 @@ MongoClient.connect(connectionString)
       )
       .then(result => {
         console.log(result)
+        res.json('Success')
       })
       .catch(error=> console.error(error))
     })
