@@ -43,11 +43,22 @@ MongoClient.connect(connectionString)
         },
         { upsert: true }
       )
-      .then(result => {
-        console.log(result)
-        res.json('Success')
-      })
-      .catch(error=> console.error(error))
+        .then(result => {
+          console.log(result)
+          res.json('Success')
+        })
+        .catch(error => console.error(error))
+    })
+
+    app.delete('/quotes', (req, res) => {
+      quotesCollection.deleteOne({ name: req.body.name })
+        .then(result => {
+          if (result.deletedCount === 0) {
+            return res.json('no quote to delete')
+          }
+          res.json("Deleted Darth Vader's quote")
+        })
+        .catch(error => console.error(error))
     })
     app.listen(3000, function () {
       console.log('listening on server 3000')
